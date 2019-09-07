@@ -5,6 +5,8 @@ var ObjectID = require('mongodb').ObjectID;
 function entradaInit(db){
 
     var entradaColl = db.collection('entrada');
+    var usersColl = db.collection('users');
+
     var entradaCollection = [];
     var entradaStructure = {
         "_id" : '',
@@ -23,6 +25,13 @@ function entradaInit(db){
             return res.status(200).json(entrada);
         });
     });//get
+
+    router.get('/users', (req, res, next)=>{
+        usersColl.find().toArray((err, users)=>{
+            if(err) return res.status(200).json([]);
+            return res.status(200).json(users);
+        });
+    });//getUser
 
     router.get('/:id', (req, res, next)=>{
         var query = {"_id": new ObjectID(req.params.id)}
